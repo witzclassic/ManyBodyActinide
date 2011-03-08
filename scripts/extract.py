@@ -1,0 +1,3 @@
+import extractkf
+
+extractkf.KFextract()

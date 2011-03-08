@@ -1,0 +1,3 @@
+GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+// CC = /Users/jbm/Development/clang+llvm-2.7/bin/clang
+CC = /Users/jbm/Development/llvm/Debug/bin/clang

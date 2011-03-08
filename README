@@ -1,0 +1,27 @@
+This repository contains three subdirectories:
+1. pythonSource contains all of the python code necessary to build a many body Hamiltonian derived from the application Density Functional Theory to actinide molecular complexes, An(H_2O)_8 and AnO_2(H_2O)_5 where An can be the elements U, Np, Pu and Am.  Although care was taken to make the code as independent as possible, some dependencies exist with respect to these molecules (see Plist.py e.g.) and to using ADF's output format in their TAPE15 and TAPE21 files.
+2. scripts contains python and bash scripts used to help automate the building process.
+3. SparseMatrix contains the project code to build the utility that diagonalizes the many body Hamiltonian. 
+
+
+Note, scripts may generate a lot of output to the screen.  It is good practice to pipe the output to a log file.
+
+1. Create working directory
+
+2. In working directory:
+   2a. Link or copy ADF TAPE21 and TAPE15 files to <file>.t21 and <file>.t15, respectively. 
+   2b. Copy script pl.py ... edit parameters in script and execute, output is Ham.plist.  An should equal the actinide atom name used by ADF, withO is true for AnO2 molecule, false otherwise, withD should be false (is a hook for future work to include 6d orbitals), and soCC should be 3 (for f orbitals), followed by the spin-orbit coupling constant and energy shift.
+   2c. Execute extract.py, output is Nks.pks, Uks.pks, Occ.pkl and Hdft.pkl.
+   2d. Execute script prep.py
+   2e. Last thing printed by extract.py is Nks = <integer>.<fraction>, create subdirectories n<integer> and n<integer+1> (actual subdir name is not important).
+
+3. In working subdirectory:
+   3a. Execute script link.sh, output Ham.plist, Hopping.pkl, Uo.pkl, Hks.pks, Occ.pkl links.
+   3b. Create state tables: edit and execute python script mbs.py with proper n representing the number of particles in the many body system (see suggestion for subdir names above).  Output mbDimension.pkl, nParticles.pkl, stateTable.pkl and stateTableDict.pkl.  These take a lot of space; they can be soft linked from a central directory.  
+   3c. Execute script Hopping.py ... alter F2, F4 and F6 as needed.
+   3d. Execute script ee.py
+
+4. Diagonalize ... run sparseMatrix ... execute script diag.sh or modify as needed.
+
+5. Output of sparseMatrix can be analyzed ... execute script analyze.py
+
